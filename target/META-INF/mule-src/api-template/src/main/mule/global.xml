@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:error-handler-plugin="http://www.mulesoft.org/schema/mule/error-handler-plugin"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:spring="http://www.mulesoft.org/schema/mule/spring" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/error-handler-plugin http://www.mulesoft.org/schema/mule/error-handler-plugin/current/mule-error-handler-plugin.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="7f09b76f-7835-4ae6-bf07-04a6545d5323" file="${env}.appname.properties" />
+	<global-property doc:name="Global Property" doc:id="7c5bfc6c-bb47-46c2-aa01-c179d61ec612" name="env" value="local" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2ccf511f-b76f-4f50-896c-9ab6e987b65f" >
+		<http:listener-connection host="${https.host}" port="${https.port}" protocol="HTTPS" tlsContext="TLS_Context"/>
+	</http:listener-config>
+	<spring:config name="Spring_Config" doc:name="Spring Config" doc:id="7aa47299-18b0-4217-bc77-1e7a5f15f8b3" files="beans.xml" />
+
+	<spring:security-manager doc:name="Spring Security manager" doc:id="89aa63be-1d3c-4b4a-bcc3-e701d8b6957f" >
+		<spring:delegate-security-provider name="securityProvider" delegate-ref="authenticationManager" />
+	</spring:security-manager>
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="89833916-9e6d-4c47-9cec-8a3101694c9d" environment="${env}" logLocationInfo="false" applicationName="${application.name}" applicationVersion="${application.version}"/>
+	<configuration doc:name="Configuration" doc:id="5705695d-4863-41f2-96dc-4e3066b91e42" defaultErrorHandler-ref="GlobalErrorHandler" /> 
+<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="61346cb8-76a8-47e6-8f80-d47f9f706e3c" file="${env}.appname.encrypted.properties" key="${runtime.secret.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<global-property doc:name="Global Property" doc:id="cd2dd311-b106-49f2-a821-e2e956b9c9d0" name="runtime.secret.key" value="local" />
+	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="d8e86a64-29e9-4b0d-8ea6-3177efcc4cdd" >
+		<tls:key-store type="jks" path="security/gefcokeystore.jks" alias="serverkey" keyPassword="${secure::encrypted.tls.keypassword}" password="${secure::encrypted.tls.keypassword}" />
+	</tls:context>
+	<error-handler name="GlobalErrorHandler" doc:id="2101b9b2-ce98-4b75-a7ac-4bae6c493043" >
+		<on-error-propagate enableNotifications="true" logException="true">
+				<json-logger:logger doc:name="LoggerExcpetion" doc:id="aef98bda-9ea0-4dcb-adf3-9e2caf097a44" message="Error Handling" priority="ERROR" tracePoint="EXCEPTION" config-ref="JSON_Logger_Config">
+					<json-logger:content><![CDATA[#[output application/json ---
+{
+ 	payload: payload,
+ 	attributes: attributes
+}]]]></json-logger:content>
+				</json-logger:logger>
+				<error-handler-plugin:on-error doc:name="Process Error" doc:id="f8bce555-06b7-4c61-bf1b-aa3be43751aa" apiName="#[p('application.name')]" apiVersion="#[p('application.version')]" errorTypes="bad connextion" errorCodes="401" errorMessages="Connextion error">
+				</error-handler-plugin:on-error>
+				<set-variable doc:name="setHttpStatus" doc:id="b1313f83-1221-4110-a4ac-e252359e7d8a" variableName="httpStatus" value="#[attributes.httpStatus]" />
+			</on-error-propagate>
+	</error-handler>
+	
+
+</mule>

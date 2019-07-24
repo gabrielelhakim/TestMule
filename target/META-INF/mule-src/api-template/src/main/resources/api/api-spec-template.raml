@@ -1,0 +1,24 @@
+#%RAML 1.0
+title: Experience API Template
+description: Sample API specification for an experience api
+version: v1
+mediaType: application/json
+protocols:
+  - HTTP
+  - HTTPS
+
+uses:
+  responses: exchange_modules/a7ecb5be-3332-4935-804c-d88cbfc670e2/responsetype/1.0.0/responsetype.raml
+
+traits:
+  traceable: !include exchange_modules/a7ecb5be-3332-4935-804c-d88cbfc670e2/traceable/1.0.0/traceable.raml
+
+securitySchemes:
+  basic:
+    type: Basic Authentication
+
+/status:
+  get:
+    securedBy: [basic]
+    is: [responses.GetResponses, traceable]
+    description: Gets the status of the application
