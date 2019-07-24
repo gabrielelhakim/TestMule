@@ -1,0 +1,8 @@
+#%RAML 1.0 Trait
+usage: Apply this trait to each API so that it has a transaction id to trace its flow within the enterprise
+description: "The service endpoint requires correlation id to be provided for cross tracability of every API request."
+headers:
+  x-correlation-id:
+    description: Request id to track API calls end to end
+    example: 71baa5a0-71a9-11e9-a887-8c85904289e8
+    required: true

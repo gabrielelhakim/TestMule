@@ -1,0 +1,70 @@
+#%RAML 1.0 Library
+usage: This library defines some basic api responses
+traits:
+  GetResponses:
+    usage: Use this trait for get requests
+    responses: 
+      404:
+        description: Not Found
+        body: 
+          application/json:
+            example: {"message": "Not found"}
+      500:
+        description: Internal Server Error
+        body: 
+          application/json:
+            example: {"message": "Internal Server Error"}
+  PostResponses:
+    usage: Use this trait for post requests
+    responses: 
+      201:
+        description: Created
+        body: 
+          application/json:
+            example: {"message": "Created successfully"}
+      409:
+        description: Conflict
+        body: 
+          application/json:
+            example: {"message": "Duplicated Resource"}
+      500:
+        description: Internal Server Error
+        body: 
+          application/json:
+            example: {"message": "Internal Server Error"}
+  PutResponses:
+    usage: Use this trait for put requests
+    responses:
+      200:
+        description: Accepted
+        body: 
+          application/json:
+            example: {"message": "Updated successfully"}
+      201:
+        description: Created
+        body: 
+          application/json:
+            example: {"message": "Created successfully"}
+      409:
+        description: Conflict
+        body: 
+          application/json:
+            example: {"message": "Duplicated Resource"}
+      500:
+        description: Internal Server Error
+        body: 
+          application/json:
+            example: {"message": "Internal Server Error"}
+  DeleteResponses:
+    usage: Use this trait for delete requests
+    responses: 
+      202:
+        description: Deleted
+        body: 
+          application/json:
+            example: {"message": "Deleted successfully"}
+      500:
+        description: Internal Server Error
+        body: 
+          application/json:
+            example: {"message": "Internal Server Error"}
