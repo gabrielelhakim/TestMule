@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>a7ecb5be-3332-4935-804c-d88cbfc670e2</groupId>
+  <artifactId>traceable</artifactId>
+  <version>1.0.0</version>
+  <name>traceable</name>
+  <repositories>
+    <repository>
+      <id>anypoint-exchange</id>
+      <name>Anypoint Exchange</name>
+      <url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
+    </repository>
+  </repositories>
+</project>

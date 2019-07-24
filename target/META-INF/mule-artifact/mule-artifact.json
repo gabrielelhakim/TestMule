@@ -8,7 +8,7 @@
     "runtime.secret.key"
   ],
   "redeploymentEnabled": true,
-  "name": "com.mycompany:api-template:1.0.0-SNAPSHOT",
+  "name": "a7ecb5be-3332-4935-804c-d88cbfc670e2:api-template:1.0.6",
   "minMuleVersion": "4.2.0",
   "requiredProduct": "MULE_EE",
   "classLoaderModelLoaderDescriptor": {
